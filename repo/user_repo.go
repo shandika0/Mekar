@@ -41,7 +41,7 @@ func (u *UserRepoStruct) GetAllUser() (*[]models.User, error) {
 	var user []models.User
 	tx := u.db.Begin()
 
-	err := tx.Debug().Preload("Pekerjaan").Preload("Pendidikan").Find(&user).Error
+	err := tx.Debug().Find(&user).Error
 	if err != nil {
 		fmt.Println("Error GetAllUser")
 		return nil, err
@@ -65,7 +65,7 @@ func (u *UserRepoStruct) GetUserByID(id int) (*models.User, error) {
 
 func (u *UserRepoStruct) UpdateUser(id int, user *models.User) (*models.User, error) {
 	tx := u.db.Begin()
-	err := u.db.Debug().Model(&user).Where("id = ?", id, 1).Update(user).Error
+	err := u.db.Debug().Model(&user).Where("id = ?",id).Update(user).Error
 	if err != nil {
 		tx.Rollback()
 		return nil, fmt.Errorf("[UserRepo.Update] Error when query update data with error: %w", err)

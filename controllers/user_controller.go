@@ -26,19 +26,23 @@ func CreateUserController(userService services.UserServiceInterface) {
 
 	_ = router.Run(":9988")
 }
+
 func (u *UserController) addUser(c *gin.Context) {
 	var user models.User
 
-	if user.Nama == "" || user.TanggalLahir == "" || user.NoKtp == 0 || user.PekerjaanId == 0 || user.PendidikanId == 0 {
-		c.JSON(http.StatusBadRequest, "Fields cannot be empty")
-		return
-	}
+	
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, "error")
 		fmt.Printf("[UserController.addUser] Error when decoder data from body with error : %v\n", err)
 		return
 	}
+	
+	if user.Nama == "" || user.TanggalLahir == "" || user.NoKtp == 0 || user.PekerjaanId == 0 || user.PendidikanId == 0 {
+		c.JSON(http.StatusBadRequest, "Fields cannot be empty")
+		return
+	}
+	
 	result, err := u.userService.AddUser(&user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "error")
@@ -65,7 +69,7 @@ func (u *UserController) getUserbyId(c *gin.Context) {
 
 	result, err := u.userService.GetUserByID(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "opps salah")
+		c.JSON(http.StatusBadRequest, "salah")
 		fmt.Printf("[UserController.getUser] Error when request data to usecase with error: %v\n", err)
 		return
 	}
@@ -80,14 +84,14 @@ func (u *UserController) updateUser(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "opps salah")
+		c.JSON(http.StatusBadRequest, "gagal bagian update")
 		fmt.Printf("[UserController.updateUser] Error when request data to usecase with error: %v\n", err)
 		return
 	}
 
 	result, err := u.userService.UpdateUser(id, &user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "opps salah")
+		c.JSON(http.StatusBadRequest, "gagal dari controller user")
 		fmt.Printf("[UserController.updateUser] Error when request data to usecase with error: %v\n", err)
 		return
 	}

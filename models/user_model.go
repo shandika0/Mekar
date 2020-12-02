@@ -8,9 +8,9 @@ type User struct {
 	TanggalLahir string     `gorm:"not null" json:"tanggal_lahir"`
 	NoKtp        int        `gorm:"not null" json:"no_ktp"`
 	PekerjaanId  int        `gorm:"not null" json:"pekerjaan_id"`
-	Pekerjaan    Pekerjaan  `gorm:"foreignkey:PendidikanID;references:id"`
+	Pekerjaan    Pekerjaan  `gorm:"foreignkey:PekerjaanID ;references:id"`
 	PendidikanId int        `gorm:"not null" json:"pendidikan_id"`
-	Pendidikan   Pendidikan `gorm:"foreignkey:PendidikanID;references:id"`
+	Pendidikan   Pendidikan `gorm:"foreignkey:PendidikanID ;references:id"`
 }
 
 func (u *User) TableName() string {
